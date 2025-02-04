@@ -4,13 +4,10 @@ import { promises as fs } from "fs";
 
 export async function GET() {
     try {
-        // Define the file path in the public directory
         const filePath = path.join(process.cwd(), "public", "Mubeen_Amjad_Resume.pdf");
 
-        // Read the file
         const fileBuffer = await fs.readFile(filePath);
 
-        // Return the PDF as a response
         return new NextResponse(fileBuffer, {
             headers: {
                 "Content-Type": "application/pdf",

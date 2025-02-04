@@ -1,18 +1,16 @@
-// app/api/chat/route.js  
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";  
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";  
 import { Pinecone } from "@pinecone-database/pinecone";  
 import { PineconeStore } from "@langchain/pinecone";  
-import { v4 as uuidv4 } from 'uuid'; // Import a UUID library for generating unique IDs  
+import { v4 as uuidv4 } from 'uuid';   
 import { NextResponse } from "next/server";
 
-const conversationMemory = {}; // In-memory object to store conversation contexts  
+const conversationMemory = {};   
 
 export async function POST(request) {  
     try {  
         const { message, threadId } = await request.json();  
 
-        // Generate a new thread ID if not provided  
         const currentThreadId = threadId || uuidv4();  
 
         if (!message) {  
@@ -22,34 +20,28 @@ export async function POST(request) {
             );  
         }  
 
-        // Initialize Pinecone  
         const pinecone = new Pinecone({  
             apiKey: process.env.PINECONE_API_KEY,  
         });  
         const indexName = process.env.PINECONE_INDEX;  
         const pineconeIndex = pinecone.Index(indexName);  
 
-        // Initialize Embeddings  
         const embeddings = new GoogleGenerativeAIEmbeddings({  
             apiKey: process.env.GEMINI_API_KEY,  
             modelName: "embedding-001",  
         });  
 
-        // Initialize Pinecone Store  
         const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {  
             pineconeIndex,  
             textKey: "text",  
             namespace: "portfolio-data",  
         });  
 
-        // Retrieve previous conversation context using the currentThreadId  
         const previousContext = conversationMemory[currentThreadId] || [];  
         
-        // Perform similarity search  
         const results = await vectorStore.similaritySearch(message, 3);  
         console.log("Results:", results);  
 
-        // Initialize Gemini Pro model  
         const model = new ChatGoogleGenerativeAI({  
             apiKey: process.env.GEMINI_API_KEY,  
             temperature: 0.5,  
@@ -85,13 +77,12 @@ If you do not have enough information, state that clearly.
         
         const response = await model.invoke(prompt);  
 
-        // Update conversation context with the latest message and response  
         conversationMemory[currentThreadId] = [...previousContext, `User: ${message}`, `Assistant: ${response}`]; // Store both user and assistant messages  
         console.log("response / ", response.content);
         
         return NextResponse.json({  
             success: true,  
-            threadId: currentThreadId, // Return the thread ID to the client
+            threadId: currentThreadId, 
             response: response.content,  
         });  
 

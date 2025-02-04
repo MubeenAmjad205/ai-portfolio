@@ -1,4 +1,3 @@
-// components/header/header.jsx
 'use client';
 
 import { useState } from 'react';

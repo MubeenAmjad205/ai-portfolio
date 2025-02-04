@@ -32,7 +32,6 @@ import Link from 'next/link';
 import axios from 'axios';
 
 
-// Mock data
 const MOCK_PROJECTS = [
   {
     id: 1,
@@ -102,7 +101,6 @@ export default function HomePage() {
   const onSubmit = async (data) => {
     setFormStatus({ success: false, message: 'Sending...' });
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       setFormStatus({ success: true, message: 'Message sent successfully!' });
       reset();
@@ -311,6 +309,7 @@ onClick={async() => {
         <p className="text-center text-gray-600 dark:text-gray-300">
           Ask me anything about Mubeen's experience, skills, or projects!
         </p>
+        {/* <div className="h-64 overflow-y-auto p-4 bg-white dark:bg-gray-600 rounded-lg custom-scrollbar"> */}
         <div className="h-64 overflow-y-auto p-4 bg-white dark:bg-gray-600 rounded-lg custom-scrollbar">
           {/* Messages Container */}
           <div className="flex flex-col-reverse min-h-full">
@@ -319,6 +318,7 @@ onClick={async() => {
                 Start a conversation by typing below...
               </div>
             )}
+            {/* {messages.map((message, index) => ( */}
             {messages.map((message, index) => (
               <div 
                 key={index}
@@ -338,7 +338,6 @@ onClick={async() => {
             ))}
           </div>
         </div>
-        {/* ... rest of the form code remains the same ... */}
         <div>
           <form 
             className="flex flex-col md:flex-row gap-4" 
@@ -436,6 +435,7 @@ onClick={async() => {
             ) : MOCK_PROJECTS.map(project => (
               <motion.div
                 key={project.id}
+                // initial={{ opacity: 50, y: 90 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"

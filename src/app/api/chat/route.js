@@ -15,32 +15,27 @@ export async function POST(request) {
             );
         }
 
-        // Initialize Pinecone
         const pinecone = new Pinecone({
             apiKey: process.env.PINECONE_API_KEY,
         });
         const indexName = process.env.PINECONE_INDEX;
         const pineconeIndex = pinecone.Index(indexName);
 
-        // Initialize Embeddings
         const embeddings = new GoogleGenerativeAIEmbeddings({
             apiKey: process.env.GEMINI_API_KEY,
             modelName: "embedding-001",
         });
 
-        // Initialize Pinecone Store
         const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
             pineconeIndex,
             textKey: "text",
             namespace: "portfolio-data",
         });
 
-        // Perform similarity search
         const results = await vectorStore.similaritySearch(message, 3);
         console.log("Results:", results);
 
 
-        // Initialize Gemini Pro model
         const model = new ChatGoogleGenerativeAI({
             apiKey: process.env.GEMINI_API_KEY,
             temperature: 0.3,

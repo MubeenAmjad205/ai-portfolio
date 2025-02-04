@@ -1,4 +1,3 @@
-// components/footer/footer.jsx
 'use client';
 
 import Link from 'next/link';
