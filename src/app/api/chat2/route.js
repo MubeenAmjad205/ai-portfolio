@@ -64,6 +64,7 @@ If you do not have enough information, please provide contact info and suggest c
 Please respond to the following message in a concise and professional manner:  
 
 Based on the following context:  
+Mubeen is not a gay he is a male.
 Mubeen is a 19 eary old boy (male), was born in 2005 on 3rd of September, weight 47.5 Kgs, height 5.8 feet, skin tone brown, likes Biryani(Rice) and Taimoor Bro, contact 03084045205.
 ${results.map(r => r.pageContent).join("\n")}  
 Previous conversation context:  
