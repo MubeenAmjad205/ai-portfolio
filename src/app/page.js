@@ -149,8 +149,8 @@ export default function HomePage() {
               <Image
                 width={650}
                 height={500}
-                src="/profile.jpg"
-                alt="John Doe"
+                src="/profile1.png"
+                alt="Mubeen Amjad"
                 className="object-cover"
               />
             </div>
@@ -197,62 +197,6 @@ onClick={async() => {
       {/* Chat Section */}
 
       {/* <section id="chat" className="py-16 px-6 bg-white dark:bg-gray-800">
-        <div className="container mx-auto max-w-4xl">
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold mb-8 text-center">
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                AI Portfolio Assistant
-              </span>
-            </h2>
-            <div className="space-y-6">
-              <p className="text-center text-gray-600 dark:text-gray-300">
-                Ask me anything about my experience, skills, or projects!
-              </p>
-              <div className="h-64 overflow-y-auto p-4 bg-white dark:bg-gray-600 rounded-lg">
-                <div className="text-center text-gray-500">
-                  Start a conversation by typing below...
-                </div>
-              </div>
-              <div >
-                <form className="flex flex-col md:flex-row gap-4" onSubmit={ async (e) => {
-                  e.preventDefault()
-                  if(e.target[0].value === '') {
-                    toast.error('Please enter a message')
-                    
-                  }else{
-                    try{
-
-                      const response= await axios.post('/api/chat2', {
-                        message: e.target[0].value,
-                        threadId:threadId
-                      })
-                      if(response.data.success){
-                        console.log(response.data.response);
-                        
-                        setThreadId(response.data.threadId)
-                      }
-                    }catch(error){
-                      console.error(error)
-                      toast.error('Error sending message')
-
-                    }
-                }
-                }}>
-                <input
-                  type="text"
-                  placeholder="Type your question..."
-                  className="flex-1 p-3 border-2 border-purple-200 dark:border-gray-600 rounded-lg focus:outline-none focus:border-purple-500 bg-transparent"
-                />
-                <button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors shadow-md">
-                  Send
-                </button>
-              </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-      <section id="chat" className="py-16 px-6 bg-white dark:bg-gray-800">
   <div className="container mx-auto max-w-4xl">
     <div className="bg-gray-50 dark:bg-gray-700 rounded-xl shadow-lg p-8">
       <h2 className="text-3xl font-bold mb-8 text-center">
@@ -265,8 +209,8 @@ onClick={async() => {
           Ask me anything about my experience, skills, or projects!
         </p>
         <div className="h-64 overflow-y-auto p-4 bg-white dark:bg-gray-600 rounded-lg">
-          {/* Messages Container */}
-          <div className="flex flex-col-reverse h-full"> {/* Reverse column direction */}
+        
+          <div className="flex flex-col-reverse h-full"> 
             {messages.length === 0 && (
               <div className="text-center text-gray-500">
                 Start a conversation by typing below...
@@ -303,10 +247,9 @@ onClick={async() => {
               }
               
               try {
-                // Add user message
                 setMessages(prev => [
                   { text: input.value, isAI: false },
-                  ...prev // Add new messages at the beginning
+                  ...prev 
                 ]);
                 setMsgLoading(true)
                 
@@ -320,7 +263,110 @@ onClick={async() => {
                   setMsgLoading(false)
                   console.log(response.data.response);
                   
-                  // Add AI response at the beginning
+                  setMessages(prev => [
+                    { text: response.data.response, isAI: true },
+                    ...prev
+                  ]);
+                  setThreadId(response.data.threadId);
+                }
+                
+                e.target.reset()
+              } catch(error) {
+                setMsgLoading(false)
+                e.target.reset()
+                console.error(error);
+                toast.error('Error sending message');
+              }
+            }}
+          >
+            <input
+              type="text"
+              disabled={msgLoading}
+              placeholder="Type your question..."
+              className="flex-1 p-3 border-2 border-purple-200 dark:border-gray-600 rounded-lg focus:outline-none focus:border-purple-500 bg-transparent"
+            />
+            <button 
+              disabled={msgLoading}
+              type="submit" 
+              className={`bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors shadow-md ${msgLoading?'cursor-not-allowed':null} `}
+            >
+              {msgLoading?'Sending...':'Send'}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> */}
+
+<section id="chat" className="py-16 px-6 bg-white dark:bg-gray-800">
+  <div className="container mx-auto max-w-4xl">
+    <div className="bg-gray-50 dark:bg-gray-700 rounded-xl shadow-lg p-8">
+      <h2 className="text-3xl font-bold mb-8 text-center">
+        <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          AI Portfolio Assistant
+        </span>
+      </h2>
+      <div className="space-y-6">
+        <p className="text-center text-gray-600 dark:text-gray-300">
+          Ask me anything about Mubeen's experience, skills, or projects!
+        </p>
+        <div className="h-64 overflow-y-auto p-4 bg-white dark:bg-gray-600 rounded-lg custom-scrollbar">
+          {/* Messages Container */}
+          <div className="flex flex-col-reverse min-h-full">
+            {messages.length === 0 && (
+              <div className="flex-1 flex items-center justify-center text-gray-500">
+                Start a conversation by typing below...
+              </div>
+            )}
+            {messages.map((message, index) => (
+              <div 
+                key={index}
+                className={`flex ${message.isAI ? 'justify-start' : 'justify-end'} mb-3`}
+              >
+                <div className={`max-w-[70%] rounded-lg p-3 ${
+                  message.isAI 
+                    ? 'bg-purple-100 dark:bg-gray-500 text-gray-800 dark:text-white'
+                    : 'bg-purple-600 text-white'
+                }`}>
+                  <p className="text-sm">{message.text}</p>
+                  <p className="text-xs mt-1 opacity-70">
+                    {message.isAI ? 'AI Assistant' : 'You'}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* ... rest of the form code remains the same ... */}
+        <div>
+          <form 
+            className="flex flex-col md:flex-row gap-4" 
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const input = e.target[0];
+              if(input.value === '') {
+                toast.error('Please enter a message');
+                return;
+              }
+              
+              try {
+                setMessages(prev => [
+                  { text: input.value, isAI: false },
+                  ...prev 
+                ]);
+                setMsgLoading(true)
+                
+                const response = await axios.post('/api/chat2', {
+                  message: input.value,
+                  threadId: threadId
+                });
+                e.target.reset()
+                
+                if(response.data.success) {
+                  setMsgLoading(false)
+                  console.log(response.data.response);
+                  
                   setMessages(prev => [
                     { text: response.data.response, isAI: true },
                     ...prev
@@ -356,6 +402,7 @@ onClick={async() => {
     </div>
   </div>
 </section>
+
 
       {/* Projects Section */}
       <section id="projects" className="py-16 px-6 dark:bg-gray-900 bg-purple-50">

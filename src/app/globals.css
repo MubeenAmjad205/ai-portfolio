@@ -17,3 +17,50 @@
   );
   background-size: 1000px 100%;
 }
+/* Custom scrollbar styles */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #9333ea #e5e7eb;
+  overflow-y: scroll !important;
+}
+
+/* For Webkit browsers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #9333ea;
+  border-radius: 4px;
+  border: 2px solid #e5e7eb;
+}
+
+/* Dark mode styles */
+.dark .custom-scrollbar {
+  scrollbar-color: #9333ea #4b5563;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: #4b5563;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  border-color: #4b5563;
+}
+
+/* Ensure proper scrolling behavior */
+.custom-scrollbar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.custom-scrollbar > div {
+  flex: 1 1 auto;
+  min-height: min-content;
+}
